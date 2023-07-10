@@ -1,11 +1,11 @@
 import React from "react";
 import Form from "./Form";
 import Header from "./Header";
-const index = () => {
+const index = ({ notify }) => {
   return (
     <div className="container">
       <Header />
-      <Form />
+      <Form notify={notify} />
     </div>
   );
 };

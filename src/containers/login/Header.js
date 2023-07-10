@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import instaPly from "./instaPly.svg";
 import search from "./search.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Header = ({
   onSearch,
@@ -10,10 +11,32 @@ const Header = ({
   setSearchPageNo,
   localData,
   input,
+  setLoader,
+  setTitle,
 }) => {
+  const logOut = () =>
+    toast.success(" Logout Successfull", {
+      toastId: "xyz",
+      position: "top-center",
+      autoClose: 500,
+      // hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 0,
+      theme: "dark",
+    });
+  const navigate = useNavigate();
+
   return (
     <header className="header">
-      <img src={instaPly} style={{ cursor: "pointer" }}></img>
+      <div className="logo ">
+        <img
+          src={instaPly}
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/movies")}
+        />
+      </div>
       <div
         className="searchContainer"
         style={{ display: showSearch ? "flex" : "none" }}
@@ -23,19 +46,27 @@ const Header = ({
             className="search"
             type="text"
             placeholder="search movies"
-            value={localData?.input ? localData.input : input}
+            value={input}
             readOnly={false}
             onChange={(e) => {
+              setLoader(true);
+              setTitle("");
               setInput(e.target.value);
               setSearchPageNo(1);
-              onSearch();
             }}
           />
           <div className="searchImage">
             <img src={search}></img>
           </div>
         </div>
-        <NavLink to="/" onClick={() => sessionStorage.clear()}>
+        <NavLink
+          to="/"
+          onClick={() => {
+            logOut();
+            sessionStorage.clear();
+            localStorage.clear();
+          }}
+        >
           Logout
         </NavLink>
       </div>
